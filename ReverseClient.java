@@ -2,7 +2,8 @@
 import java.net.*;
 import java.util.Scanner;
 import java.io.*;
- 
+import java.net.DatagramSocket;
+
 /**
  * This program demonstrates a simple TCP/IP socket client that reads input
  * from the user and prints echoed message from the server.
@@ -35,6 +36,13 @@ public class ReverseClient {
         int nums_Request = Integer.parseInt(args[3]);
         int current_users = 0 ;
 
+
+          try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            ip = socket.getLocalAddress().getHostAddress();
+        }
+
+
         try (Socket socket = new Socket(hostname, port)) {
             while(current_users != N_users ){
                 User user = new User();
@@ -47,7 +55,7 @@ public class ReverseClient {
      
                     String helloStr = new String("HELLO");/*This is the hello sting*/
             
-                    writer.println(helloStr);
+                    writer.println(helloStr +" "+user.getId()+);
                 }
                 current_users++;
                 }
