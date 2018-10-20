@@ -22,11 +22,19 @@ public class Client {
         int N_users = Integer.parseInt(args[2]);
         int current_users = 0 ;
 
+        InetAddress ip = InetAddress.getLocalHost() ;
+        String ipaddress = ip.getHostAddress();
 
-        System.out.println(InetAddress.getLocalHost().getHostAddress());
-
-
-        try (Socket socket = new Socket(hostname, port)) {
+        try (Socket clientSocket = new Socket(hostname, port)) {
+            int num_requests=0;
+            ClientThread user = new ClientThread();
+            
+             while (current_users < N_users ) {
+                Socket socket = clientSocket.accept();
+                System.out.println("New user ID: "+current_users);
+                new ClientThread(socket,++current_users,ip,port).start();
+            }
+           
             
             socket.close(); 
             }catch (UnknownHostException ex) {
