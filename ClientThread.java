@@ -11,11 +11,8 @@ public class ClientThread extends Thread{
     private String ipAddress;
     private int port;
 
-    public void setIdUser(String id){
-        this.id = id;
-    }
 
-    public String getIdUser(){
+    public int getIdUser(){
         return this.id;
     }
 	private Socket socket;
@@ -35,7 +32,7 @@ public class ClientThread extends Thread{
 			* ID (this)
              */
             int num_requests=0;
-
+            System.out.println("New user ID: "+getIdUser());
 		//	while (num_requests<300){
 
            // }
@@ -45,18 +42,15 @@ public class ClientThread extends Thread{
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
 			
-            String line = writer. 
-            
-            
+            StringBuilder request = new StringBuilder();
 
-            while ((line = reader.readLine()) != null) {
-              System.out.println(line);
-              // Don't need counterOfReadLines, just use playerNames.size().
-              request.add(line);
-            }
-       
- 
-            socket.close();
+            request.append("HELLO\n");
+            request.append("ID " + getIdUser() + "\n");
+            request.append(this.ipAddress+" "+this.port);
+
+            writer.println(request); 
+     		socket.close();      
+     
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();

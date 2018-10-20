@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
 /**
  * This program demonstrates a simple TCP/IP socket client that reads input
  * from the user and prints echoed message from the server.
@@ -13,7 +14,7 @@ import java.net.UnknownHostException;
 
 public class Client {
  
-    public static void main(String[] args) throws UnknownHostException  {
+    public static void main(String[] args) throws UnknownHostException,IOException  {
         if (args.length < 3) return;
     
 
@@ -25,25 +26,22 @@ public class Client {
         InetAddress ip = InetAddress.getLocalHost() ;
         String ipaddress = ip.getHostAddress();
 
-        try (Socket clientSocket = new Socket(hostname, port)) {
-            int num_requests=0;
-            ClientThread user = new ClientThread();
-            
-             while (current_users < N_users ) {
-                Socket socket = clientSocket.accept();
-                System.out.println("New user ID: "+current_users);
-                new ClientThread(socket,++current_users,ip,port).start();
+        
+            //try (Socket clientSocket = new Socket(hostname, port)) {           
+               // Socket socket = clientSocket.accept();
+                 while (current_users < N_users ) {
+                    Socket clientS = new Socket(hostname, port);
+
+                 try{
+                     Thread.sleep(1000);
+                    }
+                       catch(InterruptedException ex)
+                    {
+                      Thread.currentThread().interrupt();
+                    }
+
+                    new ClientThread(clientS,++current_users,ipaddress,port).start(); //new user
+               
             }
-           
-            
-            socket.close(); 
-            }catch (UnknownHostException ex) {
- 
-                System.out.println("Server not found: " + ex.getMessage());
- 
-            } catch (IOException ex) {
-    
-                System.out.println("I/O error: " + ex.getMessage());
-            }
-   }
+    }
 }

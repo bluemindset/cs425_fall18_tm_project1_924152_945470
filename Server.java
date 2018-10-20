@@ -19,9 +19,9 @@ public class Server {
             System.out.println("Server is listening on port " + port);
  
             while (true) {
-                Socket socket = serverSocket.accept();
-                System.out.println("New client connected");
- 
+            Socket  socket = serverSocket.accept();
+               
+                System.out.println("Server thread created");
                 new ServerThread(socket).start();
             }
  

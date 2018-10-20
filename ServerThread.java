@@ -11,7 +11,7 @@ public class ServerThread extends Thread {
     public ServerThread(Socket socket) {
         this.socket = socket;
     }
- 
+
     public void run() {
         try {
             /*Server has to read from the socket the ID of the user*/
@@ -24,25 +24,26 @@ public class ServerThread extends Thread {
             List<String> request = new ArrayList<>();
             String line;
 
+
+            /*Create the response*/
             while ((line = reader.readLine()) != null) {
-              System.out.println(line);
-              // Don't need counterOfReadLines, just use playerNames.size().
+            System.out.println(line);
               request.add(line);
             }
             /*Extract the ID from the request*/
+             
             String userId ="";
             for(String l:request){
                 if (l.startsWith("ID"))
                      userId = l.replaceAll("\\D+","");
             }
-                System.out.println(userId);
-         
+            System.out.println("User ID :"+userId);
          //       writer.println("Server: " + reverseText);
  
-            socket.close();
-        } catch (IOException ex) {
-            System.out.println("Server exception: " + ex.getMessage());
-            ex.printStackTrace();
-        }
+           socket.close();
+            } catch (IOException ex) {
+                System.out.println("Server exception: " + ex.getMessage());
+                ex.printStackTrace();
+            }
     }
 }
