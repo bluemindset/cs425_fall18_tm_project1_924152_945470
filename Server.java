@@ -7,7 +7,7 @@ import java.net.*;
  * message from the client in reversed form.
  * This server is multi-threaded.
  */
-public class ReverseServer {
+public class Server {
  
     public static void main(String[] args) {
         if (args.length < 1) return;

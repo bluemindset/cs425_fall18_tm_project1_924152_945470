@@ -9,22 +9,9 @@ import java.net.DatagramSocket;
  * from the user and prints echoed message from the server.
  */
 
-/*
-*   User class consists of an ID 
-*/
-public class User{ 
-    private int id;
-
-    public setId(int id){
-        this.id = id;
-    }
-    public getId(){
-        return this.id;
-    }
-}
 
 
-public class ReverseClient {
+public class Client {
  
     public static void main(String[] args) {
         if (args.length < 3) return;
@@ -45,7 +32,7 @@ public class ReverseClient {
 
         try (Socket socket = new Socket(hostname, port)) {
             while(current_users != N_users ){
-                User user = new User();
+                ClientThread user = new ClientThread();
                 
                 user.setId(current_users);
 
