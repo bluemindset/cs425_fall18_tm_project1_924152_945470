@@ -25,13 +25,10 @@ public class Client {
 
         InetAddress ip = InetAddress.getLocalHost() ;
         String ipaddress = ip.getHostAddress();
+   
+        while (current_users < N_users ) {
 
-        
-            //try (Socket clientSocket = new Socket(hostname, port)) {           
-               // Socket socket = clientSocket.accept();
-                 while (current_users < N_users ) {
-                    Socket clientS = new Socket(hostname, port);
-
+            Socket clientS = new Socket(hostname, port);
                  try{
                      Thread.sleep(1000);
                     }
@@ -40,8 +37,7 @@ public class Client {
                       Thread.currentThread().interrupt();
                     }
 
-                    new ClientThread(clientS,++current_users,ipaddress,port).start(); //new user
-               
+                    new ClientThread(clientS,++current_users,ipaddress,port).start(); //new user           
             }
     }
 }

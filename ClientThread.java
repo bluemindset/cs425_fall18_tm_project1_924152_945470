@@ -33,9 +33,9 @@ public class ClientThread extends Thread{
              */
             int num_requests=0;
             System.out.println("New user ID: "+getIdUser());
-		//	while (num_requests<300){
+			
+			while (num_requests<300){
 
-           // }
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
@@ -47,8 +47,20 @@ public class ClientThread extends Thread{
             request.append("HELLO\n");
             request.append("ID " + getIdUser() + "\n");
             request.append(this.ipAddress+" "+this.port);
+			request.append("request:\n "+ num_requests);/*This is for testing purposes*/
+            writer.println(request);
+            
+            String welcome_msg = reader.readLine();
+             while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+              request.add(line);
+            }
 
-            writer.println(request); 
+            ++num_requests; 
+        }
+
+
+
      		socket.close();      
      
         } catch (IOException ex) {

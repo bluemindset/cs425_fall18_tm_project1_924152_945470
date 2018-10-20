@@ -2,6 +2,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.Random;
 /**
  * This thread is responsible to handle client connection.
  */
@@ -38,9 +39,17 @@ public class ServerThread extends Thread {
                      userId = l.replaceAll("\\D+","");
             }
             System.out.println("User ID :"+userId);
-         //       writer.println("Server: " + reverseText);
- 
-           socket.close();
+            StringBuilder response = new StringBuilder();
+            response.append("Welcome user  "+ userId );
+            Random rand = new Random();
+            int payload_size = rand.nextInt(2048000) + 307200; /*Between 300 - 2000 KBs*/
+            byte[] payload = new byte[payload_size];
+            new Random().nextBytes(payload); /*Fill it it with random bytes*/
+
+            writer.println(response.toString());
+            output.write(payload);
+            socket.close();
+            
             } catch (IOException ex) {
                 System.out.println("Server exception: " + ex.getMessage());
                 ex.printStackTrace();
