@@ -1,4 +1,3 @@
-runClient.jar
-runServer.jar 
 *.class
 instruction.txt
+*.jar

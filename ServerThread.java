@@ -1,7 +1,7 @@
 
 import java.io.*;
 import java.net.*;
- 
+import java.util.*;
 /**
  * This thread is responsible to handle client connection.
  */
@@ -30,10 +30,10 @@ public class ServerThread extends Thread {
               request.add(line);
             }
             /*Extract the ID from the request*/
-            String userId;
-            for(String line:request){
-                if (line.indexOf('I')&&line.indexOf('D'))
-                     userId = line.replaceAll("\\D+","");
+            String userId ="";
+            for(String l:request){
+                if (l.startsWith("ID"))
+                     userId = l.replaceAll("\\D+","");
             }
                 System.out.println(userId);
          
