@@ -28,7 +28,7 @@ public class Client {
    
         while (current_users < N_users ) {
 
-          //  Socket clientS = new Socket(hostname, port);
+            Socket clientS = new Socket(hostname, port);
                  try{
                      Thread.sleep(1000);
                     }
@@ -37,7 +37,7 @@ public class Client {
                       Thread.currentThread().interrupt();
                     }
 
-                    new ClientThread(hostname,++current_users,ipaddress,port).start(); //new user
+                    new ClientThread(clientS,++current_users,ipaddress,port).start(); //new user
 
             }
     }

@@ -15,65 +15,47 @@ public class ServerThread extends Thread {
 
     public void run() {
         try {
-           
-            InputStream input = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            OutputStream output = this.socket.getOutputStream();
-            PrintWriter writer = new PrintWriter(output, true);
-            /*Server has to read from the socket the ID of the user*/
-             //writer.println("hi");
-            /*Must also print Welcome with the ID */
-           
-
-            /*This array of string is for getting the request*/
-            ArrayList<String> request = new ArrayList<String>();
-            String line = new String();
-            /*Create the response*/
-            do{
-                line = reader.readLine();
-                 String linetoenter = new String(line);
-                 System.out.print(line);
-                 request.add(linetoenter);
-             
-            }
-            while (!(line.startsWith("ID")));
-          
-
-            /*Extract the ID from the request*/
-            String userId ="";
-            for(String l:request){
-                if (l.startsWith("ID"))
-                     userId = l.replaceAll("\\D+","");
-            }
-
-           
-            /*Print testing if the user id the server got is correct*/
-//            System.out.println("User ID :"+userId);
-
-
-            
-                /*Create the response which is the welcome message & payload*/
-                StringBuilder response = new StringBuilder();
-                response.append("Welcome user  "+userId); 
-                writer.println(response);            /*Write the response the output stream*/
-
-
-            //writer.close();
-           //      output.close();
-                Random rand = new Random(); 
-                int payload_size = rand.nextInt(2048000) + 307200; /*Between 300 - 2000 KBs*/
-                byte[] payload = new byte[payload_size];        /*Create the payload of that size mesaured above*/
-                new Random().nextBytes(payload);                /*Fill it it with random bytes*/
+               while(true){
+                InputStream input =  new BufferedInputStream(socket.getInputStream(),5120000);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                OutputStream output = new BufferedOutputStream( socket.getOutputStream(), 5120000);
                
-                //if(socket.isConnected())
-             
-            //output.write(payload);
-            
-            socket.close();
-                
+                PrintWriter writer = new PrintWriter(output, true);
+                /*Server has to read from the socket the ID of the user*/
+                /*Must also print Welcome with the ID */
+                /*This array of string is for getting the request*/
+                ArrayList<String> request = new ArrayList<String>();
+                String line = new String();
+                /*Create the response*/
+                    do{
+                        line = reader.readLine();
+                            if (line!=null){
+                                String linetoenter = new String(line);
+                                request.add(linetoenter);
+                                System.out.println(line);
+                            }
+                     }while ((line!=null)&&!(line.startsWith("ID")));
+                String userId ="";
+                /*Extract the ID from the request*/
+                if(line!=null)
+                   userId = line.replaceAll("\\D+","");
+                /*Create the response which is the welcome message & payload*/
+                String response = new String("Welcome User: "+userId); 
+                writer.println(response);            /*Write the response the output stream*/
+                Random rand = new Random(); 
+                int payload_size = rand.nextInt(2000) + 300; /*Between 300 - 2000 KBs*/
+                for (int i = 0 ; i < payload_size;i++){ 
+                    byte[] payload = new  byte[1024];        /*Create the payload of that size mesaured above*/
+                    new Random().nextBytes(payload);                /*Fill it it with random bytes*/
+                   output.write(payload);
+                   // output.flush();
+                }
+                //output.write(payload);
+
+            }
             } catch (IOException ex) {
                 System.out.println("Server exception: " + ex.getMessage());
                 ex.printStackTrace();
             }
-    }
+    }   
 }

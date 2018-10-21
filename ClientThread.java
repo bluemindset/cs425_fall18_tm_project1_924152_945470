@@ -15,10 +15,10 @@ public class ClientThread extends Thread {
     public int getIdUser(){
         return this.id;
     }
-	//private Socket socket;
+	private Socket socket;
  
-    public ClientThread(String hostname,int id,String ipAddress,int port ) {
-      //  this.socket = socket;
+    public ClientThread(Socket socket,int id,String ipAddress,int port ) {
+        this.socket = socket;
         this.id = id;
         this.ipAddress = ipAddress;
         this.port = port;
@@ -34,42 +34,36 @@ public class ClientThread extends Thread {
             int num_requests=0;
             System.out.println("New user ID: "+getIdUser());
 			
+           // Socket socket = new Socket(hostname, port);
 
-            Socket socket = new Socket(hostname, port);
-
-			while (num_requests<10){
-
-	            
-
-	            OutputStream output = socket.getOutputStream();
+			while (num_requests<1){
+			    BufferedOutputStream output = new BufferedOutputStream( socket.getOutputStream(), 5120000);
 	            PrintWriter writer = new PrintWriter(output, true);
 				/*Trying to create the request in which the client will send*/ 
 	            StringBuilder request = new StringBuilder();	
-	            request.append("HELLO\n\n");
-	            request.append("\n\n"+this.ipAddress+" "+this.port);
-	            request.append("\n\nID " + getIdUser());
+	            request.append("HELLO");
+	            request.append("\n"+this.ipAddress+" "+this.port);
 				//request.append("\nrequest: "+ num_requests);/*This is for testing purposes*/
+	            request.append("\nID " + getIdUser());
+
 	            if(socket.isConnected())
 	            	writer.println(request);
 
-	            InputStream input = socket.getInputStream();
+	            InputStream input =  new BufferedInputStream(socket.getInputStream(),5120000);
 	           	Scanner scanner = new Scanner(input);
-	      
-	            //writer.close();
-	            while (input.available()==0){
-	            		//System.out.println("hiww");
-	            	 input = socket.getInputStream();
-	            	 scanner = new Scanner(input);
-	            }
-	            //BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+	           /*Wait until input is entered from the server*/
+	           // while (input.available()<10000){  		
+	            //	 input = socket.getInputStream();
+	            //}	
+	            //System.out.println("hi");
+	            scanner = new Scanner(input);
+	            
+	            //BufferedReader BufferedReaderer = new BufferedReader(new InputStreamReader(input));
 	            /*Extract the response from the server */
 	          	String  welcome_msg="";
-	           // if (input.available()>0)
-	          		welcome_msg = scanner.next() ;
-	            //System.out.println(welcome_msg);
-	            System.out.println(welcome_msg);
-	            
-	            //while ((line = reader.readLine()) != null)
+	          	welcome_msg = scanner.nextLine();
+	            System.out.println(welcome_msg);          
 	            ++num_requests; 
         	}      
 	            socket.close();
