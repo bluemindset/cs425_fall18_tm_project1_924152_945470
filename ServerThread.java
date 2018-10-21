@@ -15,40 +15,58 @@ public class ServerThread extends Thread {
 
     public void run() {
         try {
-            /*Server has to read from the socket the ID of the user*/
+           
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            /*Must also print Welcome with the ID */
-            OutputStream output = socket.getOutputStream();
+            OutputStream output = this.socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
+            /*Server has to read from the socket the ID of the user*/
+             //writer.println("hi");
+            /*Must also print Welcome with the ID */
+           
+
             /*This array of string is for getting the request*/
-            List<String> request = new ArrayList<>();
-            String line;
+            ArrayList<String> request = new ArrayList<String>();
+            String line = new String();
             /*Create the response*/
-            while ((line = reader.readLine()) != null) {
-                 System.out.println(line);
-                 request.add(line);
+            do{
+                line = reader.readLine();
+                 String linetoenter = new String(line);
+                 System.out.print(line);
+                 request.add(linetoenter);
+             
             }
+            while (!(line.startsWith("ID")));
+          
+
             /*Extract the ID from the request*/
             String userId ="";
             for(String l:request){
                 if (l.startsWith("ID"))
                      userId = l.replaceAll("\\D+","");
             }
+
+           
             /*Print testing if the user id the server got is correct*/
-            System.out.println("User ID :"+userId);
+//            System.out.println("User ID :"+userId);
+
+
             
-            /*Create the response which is the welcome message & payload*/
-            StringBuilder response = new StringBuilder();
-            response.append("Welcome user  "+ userId ); 
-           
-            Random rand = new Random(); 
-            int payload_size = rand.nextInt(2048000) + 307200; /*Between 300 - 2000 KBs*/
-            byte[] payload = new byte[payload_size];        /*Create the payload of that size mesaured above*/
-            new Random().nextBytes(payload);                /*Fill it it with random bytes*/
-           
-            //if(socket.isConnected())
-            writer.println(response);            /*Write the response the output stream*/
+                /*Create the response which is the welcome message & payload*/
+                StringBuilder response = new StringBuilder();
+                response.append("Welcome user  "+userId); 
+                writer.println(response);            /*Write the response the output stream*/
+
+
+            //writer.close();
+           //      output.close();
+                Random rand = new Random(); 
+                int payload_size = rand.nextInt(2048000) + 307200; /*Between 300 - 2000 KBs*/
+                byte[] payload = new byte[payload_size];        /*Create the payload of that size mesaured above*/
+                new Random().nextBytes(payload);                /*Fill it it with random bytes*/
+               
+                //if(socket.isConnected())
+             
             //output.write(payload);
             
             socket.close();
