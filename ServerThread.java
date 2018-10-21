@@ -40,18 +40,18 @@ public class ServerThread extends Thread {
                 if(line!=null)
                    userId = line.replaceAll("\\D+","");
                 /*Create the response which is the welcome message & payload*/
-                String response = new String("Welcome User: "+userId); 
-                writer.println(response);            /*Write the response the output stream*/
                 Random rand = new Random(); 
-                int payload_size = rand.nextInt(2000) + 300; /*Between 300 - 2000 KBs*/
-                for (int i = 0 ; i < payload_size;i++){ 
-                    byte[] payload = new  byte[1024];        /*Create the payload of that size mesaured above*/
-                    new Random().nextBytes(payload);                /*Fill it it with random bytes*/
-                   output.write(payload);
-                   // output.flush();
-                }
-                //output.write(payload);
-
+                int payload_size = rand.nextInt(2048000) + 307200; /*Between 300(307200 bytes) - 2000 (2048000 bytes)KBs*/
+               // for (int i = 0 ; i < payload_size;i++){ 
+                    char[] payload = new  char[payload_size];        /*Create the payload of that size mesaured above*/
+                    for(int i=0;i < payload_size-1 ;i++){
+                            payload[i]='S';
+                        }
+                    //new Random().nextBytes(payload);                /*Fill it it with random bytes*/
+                    String response = new String("Welcome User: "+userId+"\nContent-Lenght: "+payload_size); 
+                    writer.println(response);            /*Write the response the output stream*/
+                    writer.println(payload);
+                    writer.println("end");  
             }
             } catch (IOException ex) {
                 System.out.println("Server exception: " + ex.getMessage());

@@ -49,21 +49,29 @@ public class ClientThread extends Thread {
 	            if(socket.isConnected())
 	            	writer.println(request);
 
-	            InputStream input =  new BufferedInputStream(socket.getInputStream(),5120000);
+	            BufferedInputStream input =  new BufferedInputStream(socket.getInputStream(),5120000);
 	           	Scanner scanner = new Scanner(input);
 
 	           /*Wait until input is entered from the server*/
 	           // while (input.available()<10000){  		
 	            //	 input = socket.getInputStream();
 	            //}	
-	            //System.out.println("hi");
-	            scanner = new Scanner(input);
+	            System.out.println(input.available());
+	           
 	            
 	            //BufferedReader BufferedReaderer = new BufferedReader(new InputStreamReader(input));
 	            /*Extract the response from the server */
 	          	String  welcome_msg="";
+	          	String  contect_msg="";
 	          	welcome_msg = scanner.nextLine();
-	            System.out.println(welcome_msg);          
+	          	contect_msg= scanner.nextLine();
+	            System.out.println(welcome_msg);
+	            System.out.println(contect_msg);
+				
+
+				char c = scanner.next().charAt(300000);
+	          	System.out.print(c);
+	           
 	            ++num_requests; 
         	}      
 	            socket.close();
