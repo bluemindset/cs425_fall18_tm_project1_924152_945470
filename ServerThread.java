@@ -21,33 +21,35 @@ public class ServerThread extends Thread {
             /*Must also print Welcome with the ID */
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
-            
+            /*This array of string is for getting the request*/
             List<String> request = new ArrayList<>();
             String line;
-
-
             /*Create the response*/
             while ((line = reader.readLine()) != null) {
-            System.out.println(line);
-              request.add(line);
+                 System.out.println(line);
+                 request.add(line);
             }
             /*Extract the ID from the request*/
-             
             String userId ="";
             for(String l:request){
                 if (l.startsWith("ID"))
                      userId = l.replaceAll("\\D+","");
             }
+            /*Print testing if the user id the server got is correct*/
             System.out.println("User ID :"+userId);
+            
+            /*Create the response which is the welcome message & payload*/
             StringBuilder response = new StringBuilder();
-            response.append("Welcome user  "+ userId );
-            Random rand = new Random();
+            response.append("Welcome user  "+ userId ); 
+           
+            Random rand = new Random(); 
             int payload_size = rand.nextInt(2048000) + 307200; /*Between 300 - 2000 KBs*/
-            byte[] payload = new byte[payload_size];
-            new Random().nextBytes(payload); /*Fill it it with random bytes*/
-
-            writer.println(response.toString());
-            output.write(payload);
+            byte[] payload = new byte[payload_size];        /*Create the payload of that size mesaured above*/
+            new Random().nextBytes(payload);                /*Fill it it with random bytes*/
+           
+            //if(socket.isConnected())
+            writer.println(response);            /*Write the response the output stream*/
+            //output.write(payload);
             
             socket.close();
                 

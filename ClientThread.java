@@ -36,29 +36,35 @@ public class ClientThread extends Thread{
 			
 			while (num_requests<10){
 
-            InputStream input = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+	            
 
-            OutputStream output = socket.getOutputStream();
-            PrintWriter writer = new PrintWriter(output, true);
-			
-            StringBuilder request = new StringBuilder();
+	            OutputStream output = socket.getOutputStream();
+	            PrintWriter writer = new PrintWriter(output, true);
+				/*Trying to create the request in which the client will send*/ 
+	            StringBuilder request = new StringBuilder();
+	            request.append("HELLO\n");
+	            request.append("ID " + getIdUser() + "\n");
+	            request.append(this.ipAddress+" "+this.port);
+				request.append("\nrequest: "+ num_requests);/*This is for testing purposes*/
+	            if(socket.isConnected())
+	            	writer.println(request);
 
-            request.append("HELLO\n");
-            request.append("ID " + getIdUser() + "\n");
-            request.append(this.ipAddress+" "+this.port);
-			request.append("\nrequest:\n "+ num_requests);/*This is for testing purposes*/
-            if(socket.isConnected())
-            writer.println(request);
-            
-            //String welcome_msg = reader.readLine();
-            //System.out.println(welcome_msg);
-            //while ((line = reader.readLine()) != null)
-            ++num_requests; 
-        }
-
-     		socket.close();      
-     
+	            InputStream input = socket.getInputStream();
+	            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+	            /*Extract the response from the server */
+	            //String welcome_msg = "hi";
+	            while(true){
+	          	String  welcome_msg="";
+	            if (input.available()>0)
+	          		welcome_msg = reader.readLine() ;
+	            //System.out.println(welcome_msg);
+	            System.out.println(welcome_msg);
+	            }
+	            //while ((line = reader.readLine()) != null)
+	            ++num_requests; 
+        	}      
+	            socket.close();
+     		
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
