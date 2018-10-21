@@ -48,8 +48,9 @@ public class ServerThread extends Thread {
 
             writer.println(response.toString());
             output.write(payload);
-            socket.close();
             
+            socket.close();
+                
             } catch (IOException ex) {
                 System.out.println("Server exception: " + ex.getMessage());
                 ex.printStackTrace();
