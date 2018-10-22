@@ -20,9 +20,10 @@ public class ServerThread extends Thread {
        // this.logger = logger;
     }
  
-    public void run()  {
+    public void run() {
                 
         try {
+                
                 InputStream input =  new BufferedInputStream(socket.getInputStream(),5120);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
                 OutputStream output = new BufferedOutputStream( socket.getOutputStream(), 5120);
@@ -67,14 +68,22 @@ public class ServerThread extends Thread {
                     end =reader.readLine();
                 
                     completed_requests++;
-
+                 double proc=0.0;
+                 double mem=0.0;
+                    try{
+                         mem = Server.getMemoryUsageUtilization();
+                         proc= Server.getProcessCpuLoad();
+                        
+                    }catch(Exception ex1){
+                        ex1.printStackTrace();
+                        }
                     long endTime = System.nanoTime();
 
                     long duration = (endTime - startTime);
                     overall_duration += duration;
                     if (overall_duration >= SEC ){
                             sec++;
-                            String logdata = new String("\nNo requests: "+completed_requests+" Seconds: "+sec);
+                            String logdata = new String("\nNo requests: "+completed_requests+" Seconds: "+sec+" CPU Load: "+proc+ " Memory Utilization: "+ mem );
                             dataoutput.add(logdata);
                             overall_duration=0;                            
                         }
@@ -83,10 +92,11 @@ public class ServerThread extends Thread {
             socket.close();
             writer.close();
             reader.close();
-            } catch (IOException ex) {
+                } catch (IOException ex) {
                 System.out.println("Server exception: " + ex.getMessage());
                 ex.printStackTrace();
-            }
+                }
+                
             
             //System.out.println(dataoutput);
             String path = new String("throughput.txt");

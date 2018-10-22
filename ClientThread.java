@@ -12,7 +12,7 @@ public class ClientThread extends Thread {
     private int port;
     private String hostname;
     static int user=0;
-    static final int num_r= 300;
+    static final int num_r= 30;
     static long overall_latency=0;
     public int getIdUser(){
         return this.id;
