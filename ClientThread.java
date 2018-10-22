@@ -12,6 +12,7 @@ public class ClientThread extends Thread {
     private int port;
     private String hostname;
     static int user=0;
+    static int num_r= 300;
     static long overall_latency=0;
     public int getIdUser(){
         return this.id;
@@ -41,7 +42,7 @@ public class ClientThread extends Thread {
 			    BufferedOutputStream output = new BufferedOutputStream( socket.getOutputStream(), 5120000);
 	            PrintWriter writer = new PrintWriter(output, true);
 				/*Trying to create the request in which the client will send*/ 
-			while (num_requests<30){	
+			while (num_requests<num_r){	
 				StringBuilder request = new StringBuilder();	
 	            request.append("HELLO");
 	            request.append("\n"+this.ipAddress+" "+this.port);
@@ -66,14 +67,18 @@ public class ClientThread extends Thread {
 	          	welcome_msg = scanner.nextLine();
 	          	if (scanner.hasNext())
 	          	contect_msg= scanner.nextLine();
-	            System.out.println(welcome_msg);
-	            System.out.println(contect_msg);
-				
+
+	          	if (!welcome_msg.contains(".")&&!contect_msg.contains(".")){
+	            	System.out.println(welcome_msg);
+	            	System.out.println(contect_msg);
+				}
                 String offset_ = contect_msg.replaceAll("\\D+","");
                 	int offset=0;
                 if (!offset_.equals("")){
                 	 offset = Integer.parseInt(offset_);
-					char c = scanner.next().charAt(offset-1);
+					 char c = scanner.next().charAt(offset-5);
+					 if (c== '.')
+					 	System.out.println("(Prove)payload is accepted");
 	          	}
 	          	
  				/*End time is when the response is received*/ 
@@ -91,14 +96,14 @@ public class ClientThread extends Thread {
             
             try{
                 PrintWriter logger = new PrintWriter(path, "UTF-8");
-                logger.println("Latency (nanos):"+overall_latency+" - RTTs  "+RTT); 
+                logger.println("Latency (nanos):"+overall_latency/1000000000+" - RTTs  "+RTT); 
                	logger.close();
              
             } catch (IOException ex) {
                 System.out.println("File exception: " + ex.getMessage());
                 ex.printStackTrace();
             }
-     		System.out.println("Latency is "+overall_latency+ " RTTs are: "+RTT);
+     		System.out.println("Latency is "+overall_latency/1000000000+ " RTTs are: "+RTT);
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
