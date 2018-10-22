@@ -8,7 +8,7 @@ import java.net.*;
  * This server is multi-threaded.
  */
 public class Server {
- 
+ public int  completed_requests=0;
     public static void main(String[] args) {
         if (args.length < 1) return;
  
@@ -17,7 +17,7 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(port)) {  
  
             System.out.println("Server is listening on port " + port);
- 
+          
             while (true) {
             Socket socket = serverSocket.accept();
                

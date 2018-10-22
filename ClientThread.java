@@ -11,12 +11,12 @@ public class ClientThread extends Thread {
     private String ipAddress;
     private int port;
     private String hostname;
-
+    static int user=0;
     public int getIdUser(){
         return this.id;
     }
 	private Socket socket;
- 
+ 	static int RTT;
     public ClientThread(Socket socket,int id,String ipAddress,int port ) {
         this.socket = socket;
         this.id = id;
@@ -31,15 +31,16 @@ public class ClientThread extends Thread {
 			* Port
 			* ID (this)
              */
+			long startTime = System.nanoTime();
             int num_requests=0;
             System.out.println("New user ID: "+getIdUser());
 			
            // Socket socket = new Socket(hostname, port);
 
-			while (num_requests<1){
 			    BufferedOutputStream output = new BufferedOutputStream( socket.getOutputStream(), 5120000);
 	            PrintWriter writer = new PrintWriter(output, true);
 				/*Trying to create the request in which the client will send*/ 
+			while (num_requests<30){	
 	            StringBuilder request = new StringBuilder();	
 	            request.append("HELLO");
 	            request.append("\n"+this.ipAddress+" "+this.port);
@@ -52,12 +53,6 @@ public class ClientThread extends Thread {
 	            BufferedInputStream input =  new BufferedInputStream(socket.getInputStream(),5120000);
 	           	Scanner scanner = new Scanner(input);
 
-	           /*Wait until input is entered from the server*/
-	           // while (input.available()<10000){  		
-	            //	 input = socket.getInputStream();
-	            //}	
-	            System.out.println(input.available());
-	           
 	            
 	            //BufferedReader BufferedReaderer = new BufferedReader(new InputStreamReader(input));
 	            /*Extract the response from the server */
@@ -68,14 +63,29 @@ public class ClientThread extends Thread {
 	            System.out.println(welcome_msg);
 	            System.out.println(contect_msg);
 				
-
-				char c = scanner.next().charAt(300000);
-	          	System.out.print(c);
-	           
+                String offset_ = contect_msg.replaceAll("\\D+","");
+                int offset = Integer.parseInt(offset_);
+				char c = scanner.next().charAt(offset-1);
+	          	//System.out.print(c);
+	            ++RTT;
 	            ++num_requests; 
-        	}      
+        	}      	
+	            writer.println("end");
 	            socket.close();
-     		
+     		long endTime = System.nanoTime();
+     		long duration = (endTime - startTime);
+			user++ ;
+            String path = new String("latency"+ user + ".txt");
+            try{
+                PrintWriter logger = new PrintWriter(path, "UTF-8");
+                logger.println("\nCLatency (nanos):"+duration+" - RTTs  "+RTT); 
+               	logger.close();
+             
+            } catch (IOException ex) {
+                System.out.println("File exception: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+     		System.out.println("Latency is "+duration+ " RTTs are: "+RTT);
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
