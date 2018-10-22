@@ -53,7 +53,7 @@ public class ServerThread extends Thread {
                 /*Create the response which is the welcome message & payload*/
                 Random rand = new Random(); 
                 int payload_size = rand.nextInt(2000) + 300; /*Between 300(307200 bytes) - 2000 (2048000 bytes)KBs*/
-                payload_size*= 10;
+                payload_size*= 1;
                     char[] payload = new  char[payload_size];        /*Create the payload of that size mesaured above*/
                     for(int i=0;i < payload_size-1 ;i++){
                             payload[i]='.';

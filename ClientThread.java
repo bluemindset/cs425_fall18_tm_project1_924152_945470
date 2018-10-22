@@ -12,7 +12,7 @@ public class ClientThread extends Thread {
     private int port;
     private String hostname;
     static int user=0;
-    static int num_r= 300;
+    static final int num_r= 300;
     static long overall_latency=0;
     public int getIdUser(){
         return this.id;
@@ -76,7 +76,9 @@ public class ClientThread extends Thread {
                 	int offset=0;
                 if (!offset_.equals("")){
                 	 offset = Integer.parseInt(offset_);
-					 char c = scanner.next().charAt(offset-5);
+                	 char c = ' ';
+                	 if (scanner.hasNext())
+					 	c = scanner.next().charAt(offset-1);
 					 if (c== '.')
 					 	System.out.println("(Prove)payload is accepted");
 	          	}
