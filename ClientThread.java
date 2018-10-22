@@ -91,10 +91,9 @@ public class ClientThread extends Thread {
 	            ++num_requests; 
         	}      	
 	            writer.println("end");
-	           // socket.close();
-	        user++ ;
-           // String path = new String("latency"+ user + ".txt");
-            String path = new String("latency.txt");
+	            socket.close();
+	       		writer.close();
+	           String path = new String("latency.txt");
             
             try{
                 PrintWriter logger = new PrintWriter(path, "UTF-8");

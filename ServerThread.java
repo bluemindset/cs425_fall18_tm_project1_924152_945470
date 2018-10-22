@@ -79,15 +79,16 @@ public class ServerThread extends Thread {
                             overall_duration=0;                            
                         }
                     }
+
+            socket.close();
+            writer.close();
+            reader.close();
             } catch (IOException ex) {
                 System.out.println("Server exception: " + ex.getMessage());
                 ex.printStackTrace();
             }
-            user++ ;
-           /*
-            */
-            //  System.out.println("Completed requests:"+completed_requests+"- In seconds:  "+duration); 
-            System.out.println(dataoutput);
+            
+            //System.out.println(dataoutput);
             String path = new String("throughput.txt");
             try{
                 PrintWriter logger = new PrintWriter(path, "UTF-8");
