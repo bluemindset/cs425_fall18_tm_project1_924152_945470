@@ -39,7 +39,7 @@ public class ClientThread extends Thread {
 			
            // Socket socket = new Socket(hostname, port);
 
-			    BufferedOutputStream output = new BufferedOutputStream( socket.getOutputStream(), 5120000);
+			    BufferedOutputStream output = new BufferedOutputStream( socket.getOutputStream(), 5120);
 	            PrintWriter writer = new PrintWriter(output, true);
 				/*Trying to create the request in which the client will send*/ 
 			while (num_requests<num_r){	
@@ -55,7 +55,7 @@ public class ClientThread extends Thread {
 	            if(socket.isConnected())
 	            	writer.println(request);
 
-	            BufferedInputStream input =  new BufferedInputStream(socket.getInputStream(),5120000);
+	            BufferedInputStream input =  new BufferedInputStream(socket.getInputStream(),5120);
 	           	Scanner scanner = new Scanner(input);
 
 	            

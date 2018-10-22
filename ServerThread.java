@@ -23,9 +23,9 @@ public class ServerThread extends Thread {
     public void run()  {
                 
         try {
-                InputStream input =  new BufferedInputStream(socket.getInputStream(),51200000);
+                InputStream input =  new BufferedInputStream(socket.getInputStream(),5120);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                OutputStream output = new BufferedOutputStream( socket.getOutputStream(), 51200000);
+                OutputStream output = new BufferedOutputStream( socket.getOutputStream(), 5120);
                 PrintWriter writer = new PrintWriter(output, true);
                 String end = new String();
                 end = reader.readLine();
@@ -52,7 +52,7 @@ public class ServerThread extends Thread {
                    userId = line.replaceAll("\\D+","");
                 /*Create the response which is the welcome message & payload*/
                 Random rand = new Random(); 
-                int payload_size = rand.nextInt(2000) + 300; /*Between 300(307200 bytes) - 2000 (2048000 bytes)KBs*/
+                int payload_size = rand.nextInt(1) + 5; /*Between 300(307200 bytes) - 2000 (2048000 bytes)KBs*/
                 payload_size*= 1;
                     char[] payload = new  char[payload_size];        /*Create the payload of that size mesaured above*/
                     for(int i=0;i < payload_size-1 ;i++){
