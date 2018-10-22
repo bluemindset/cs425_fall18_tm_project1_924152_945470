@@ -2,4 +2,4 @@
 
 javac *.java
 jar cmf clientManifest.mf client.jar *.class *.java
-java -jar client.jar localhost 6868 10
+java -jar client.jar 34.210.67.188 6868 1 

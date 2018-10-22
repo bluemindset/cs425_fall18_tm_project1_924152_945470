@@ -16,8 +16,6 @@ public class Client {
  
     public static void main(String[] args) throws UnknownHostException,IOException  {
         if (args.length < 3) return;
-    
-
         String hostname = args[0];
         int port = Integer.parseInt(args[1]);
         int N_users = Integer.parseInt(args[2]);
@@ -36,9 +34,7 @@ public class Client {
                     {
                       Thread.currentThread().interrupt();
                     }
-
                     new ClientThread(clientS,++current_users,ipaddress,port).start(); //new user
-
             }
     }
 }

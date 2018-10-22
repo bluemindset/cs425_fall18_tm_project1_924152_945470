@@ -8,6 +8,7 @@ import java.util.Random;
  */
 public class ServerThread extends Thread {
     static int completed_requests;
+    static final int SEC = 1000000000;
     static int user = 0;
     static long overall_duration=0;
     static long sec =0;
@@ -51,7 +52,8 @@ public class ServerThread extends Thread {
                    userId = line.replaceAll("\\D+","");
                 /*Create the response which is the welcome message & payload*/
                 Random rand = new Random(); 
-                int payload_size = rand.nextInt(2048000) + 307200; /*Between 300(307200 bytes) - 2000 (2048000 bytes)KBs*/
+                int payload_size = rand.nextInt(2000) + 300; /*Between 300(307200 bytes) - 2000 (2048000 bytes)KBs*/
+                payload_size*= 10;
                     char[] payload = new  char[payload_size];        /*Create the payload of that size mesaured above*/
                     for(int i=0;i < payload_size-1 ;i++){
                             payload[i]='.';
@@ -70,7 +72,7 @@ public class ServerThread extends Thread {
 
                     long duration = (endTime - startTime);
                     overall_duration += duration;
-                    if (overall_duration >=1000000000){
+                    if (overall_duration >= SEC ){
                             sec++;
                             String logdata = new String("\nNo requests: "+completed_requests+" Seconds: "+sec);
                             dataoutput.add(logdata);
@@ -84,7 +86,7 @@ public class ServerThread extends Thread {
             user++ ;
            /*
             */
-            //System.out.println("Completed requests:"+completed_requests+"- In seconds:  "+duration); 
+            //  System.out.println("Completed requests:"+completed_requests+"- In seconds:  "+duration); 
             System.out.println(dataoutput);
             String path = new String("throughput.txt");
             try{
