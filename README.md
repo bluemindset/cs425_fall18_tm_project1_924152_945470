@@ -2,4 +2,3 @@
 ## CS425 CLASS FALL 2018
 ### Stefanos Ioannou 945470 
 ### Giorgos Achilleos 924152
-
