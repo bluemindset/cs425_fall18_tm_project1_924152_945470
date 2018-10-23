@@ -15,20 +15,25 @@ import java.util.concurrent.TimeUnit;
 public class Client {
  
     public static void main(String[] args) throws UnknownHostException,IOException  {
-        if (args.length < 3) return;
+
+        if (args.length < 4) return;
         String hostname = args[0];
         int port = Integer.parseInt(args[1]);
         int N_users = Integer.parseInt(args[2]);
         int current_users = 0 ;
-
+        int reps = Integer.parseInt(args[3]);
         InetAddress ip = InetAddress.getLocalHost() ;
         String ipaddress = ip.getHostAddress();
-   
-        while (current_users < N_users ) {
 
-            Socket clientS = new Socket(hostname, port);
-             
+        /*While repetetions are not 0 run the program*/
+        while(reps>0){
+            while (current_users < N_users ) {
+                /*Open a new Socket*/
+                Socket clientS = new Socket(hostname, port);
+                    /*Open a new client thread*/     
                     new ClientThread(clientS,++current_users,ipaddress,port).start(); //new user
             }
+            reps--;
+        }
     }
 }
