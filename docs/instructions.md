@@ -15,7 +15,7 @@ java -jar client.jar localhost 6868 10 1
 localhost = hostname , 6868 = port , 10 = number of users , 1 = repetition
 ```
 
-Also to access the VM you can use
+Also to access the amazon VM you can use
 ```
 sudo ssh -i .ssh/* ubuntu@*.compute.amazonaws.com
 ```
