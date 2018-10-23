@@ -11,7 +11,7 @@ public class ClientThread extends Thread {
     private String ipAddress;
     private int port;
     private String hostname;
-    static final int num_r= 10; /*These are the repetisions of each user*/
+    static final int num_r= 300; /*These are the generated requests of each user*/
     static long overall_latency=0;/*This is the overall latency*/
     private Socket socket;
     static int RTT; /*Number of RTTs*/
