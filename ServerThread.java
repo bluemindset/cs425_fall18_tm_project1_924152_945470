@@ -23,14 +23,15 @@ public class ServerThread extends Thread {
     public void run() {
                 
         try {
-                
+                /*Creating the input and output streams*/
                 InputStream input =  new BufferedInputStream(socket.getInputStream(),5120);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
                 OutputStream output = new BufferedOutputStream( socket.getOutputStream(), 5120);
                 PrintWriter writer = new PrintWriter(output, true);
                 String end = new String();
                 end = reader.readLine();
-               while(!end.equals("")&&!end.equals("end")){
+                
+                while(!end.equals("")&&!end.equals("end")){
                 long startTime = System.nanoTime();               
 
                 /*Server has to read from the socket the ID of the user*/
@@ -53,8 +54,8 @@ public class ServerThread extends Thread {
                    userId = line.replaceAll("\\D+","");
                 /*Create the response which is the welcome message & payload*/
                 Random rand = new Random(); 
-                int payload_size = rand.nextInt(1) + 5; /*Between 300(307200 bytes) - 2000 (2048000 bytes)KBs*/
-                payload_size*= 1;
+                int payload_size = rand.nextInt(2000) + 300; /*Between 300(307200 bytes) - 2000 (2048000 bytes)KBs*/
+                payload_size*= 1024;
                     char[] payload = new  char[payload_size];        /*Create the payload of that size mesaured above*/
                     for(int i=0;i < payload_size-1 ;i++){
                             payload[i]='.';
