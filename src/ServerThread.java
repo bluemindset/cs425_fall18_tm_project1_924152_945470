@@ -85,7 +85,7 @@ public class ServerThread extends Thread {
                     long duration = (endTime - startTime);
                     overall_duration += duration;
                     
-                    String logdata = new String("\nNo requests: "+completed_requests+"Time(s)/Users: "+(overall_duration/1000000000)+" CPU Load: "+proc+ " Memory Utilization: "+ mem );
+                    String logdata = new String("\nNo requests: "+completed_requests+" Time(s)/Users: "+(overall_duration/1000000000)+" CPU Load: "+proc+ " Memory Utilization: "+ mem );
                     dataoutput.add(logdata);
                             
                     }

@@ -98,7 +98,7 @@ public class ClientThread extends Thread {
                 /*Put the results in a text file*/
                 String path = new String("latency.txt");            
                 PrintWriter logger = new PrintWriter(path, "UTF-8");
-                logger.println("Latency (s):"+overall_latency/1000000000+" - RTTs  "+RTT); 
+                logger.println("Latency/Users (s):"+overall_latency/1000000000+" - RTTs  "+RTT); 
                	logger.close();             
             } catch (IOException ex) {
                 System.out.println("File exception: " + ex.getMessage());
