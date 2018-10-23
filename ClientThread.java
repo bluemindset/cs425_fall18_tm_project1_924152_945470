@@ -12,7 +12,7 @@ public class ClientThread extends Thread {
     private int port;
     private String hostname;
     static int user=0;
-    static final int num_r= 30;
+    static final int num_r= 10;
     static long overall_latency=0;
     public int getIdUser(){
         return this.id;
@@ -25,6 +25,11 @@ public class ClientThread extends Thread {
         this.ipAddress = ipAddress;
         this.port = port;
     }
+
+     public static synchronized void increment_latency(long duration) {
+        overall_latency += duration;
+    }
+
     public void run()   {
         try {
             /* Client must create request which is consisted by the following: 
@@ -43,6 +48,7 @@ public class ClientThread extends Thread {
 	            PrintWriter writer = new PrintWriter(output, true);
 				/*Trying to create the request in which the client will send*/ 
 			while (num_requests<num_r){	
+	        	long startTime = System.nanoTime();
 				StringBuilder request = new StringBuilder();	
 	            request.append("HELLO");
 	            request.append("\n"+this.ipAddress+" "+this.port);
@@ -50,7 +56,6 @@ public class ClientThread extends Thread {
 	            request.append("\nID " + getIdUser());
 
 	            /*Start by calculating the time the request is being sent */
-	        	long startTime = System.nanoTime();
 	            
 	            if(socket.isConnected())
 	            	writer.println(request);
@@ -78,15 +83,15 @@ public class ClientThread extends Thread {
                 	 offset = Integer.parseInt(offset_);
                 	 char c = ' ';
                 	 if (scanner.hasNext())
-					 	c = scanner.next().charAt(offset-1);
+					 	c = scanner.next().charAt(offset-5);
 					 if (c== '.')
 					 	System.out.println("(Prove)payload is accepted");
 	          	}
 	          	
  				/*End time is when the response is received*/ 
-     			long endTime = System.nanoTime();
-     			long duration = (endTime - startTime);
-     			overall_latency += duration;
+     			long duration = System.nanoTime() - startTime;
+     			increment_latency(duration);
+     			System.out.println(duration);
 	            ++RTT;
 	            ++num_requests; 
         	}      	
@@ -97,14 +102,14 @@ public class ClientThread extends Thread {
             
             try{
                 PrintWriter logger = new PrintWriter(path, "UTF-8");
-                logger.println("Latency (nanos):"+overall_latency/1000000000+" - RTTs  "+RTT); 
+                logger.println("Latency (s):"+overall_latency/1000000000+" - RTTs  "+RTT); 
                	logger.close();
              
             } catch (IOException ex) {
                 System.out.println("File exception: " + ex.getMessage());
                 ex.printStackTrace();
             }
-     		System.out.println("Latency is "+overall_latency/1000000000+ " RTTs are: "+RTT);
+     		System.out.println("Latency is "+(overall_latency/1000000000)+ " RTTs are: "+RTT);
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();

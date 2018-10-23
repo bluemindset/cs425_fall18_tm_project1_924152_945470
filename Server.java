@@ -14,7 +14,8 @@ import java.lang.management.ManagementFactory;
 public class Server {
 
     private static long beforeM;
-public static double getProcessCpuLoad() throws Exception {
+    
+    public static double getProcessCpuLoad() throws Exception {
         MBeanServer mbs    = ManagementFactory.getPlatformMBeanServer();
         ObjectName name    = ObjectName.getInstance("java.lang:type=OperatingSystem");
         AttributeList list = mbs.getAttributes(name, new String[]{ "ProcessCpuLoad" });
@@ -41,7 +42,7 @@ public static double getMemoryUsageUtilization() {
         if (args.length < 1) return;
         beforeM=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
         int port = Integer.parseInt(args[0]);
- 
+        
         try (ServerSocket serverSocket = new ServerSocket(port)) {  
  
             System.out.println("Server is listening on port " + port);

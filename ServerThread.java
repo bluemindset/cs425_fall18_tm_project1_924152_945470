@@ -82,12 +82,10 @@ public class ServerThread extends Thread {
 
                     long duration = (endTime - startTime);
                     overall_duration += duration;
-                    if (overall_duration >= SEC ){
-                            sec++;
-                            String logdata = new String("\nNo requests: "+completed_requests+" Seconds: "+sec+" CPU Load: "+proc+ " Memory Utilization: "+ mem );
+                    
+                            String logdata = new String("\nNo requests: "+completed_requests+"Time(s)/Users: "+(overall_duration/1000000000)+" CPU Load: "+proc+ " Memory Utilization: "+ mem );
                             dataoutput.add(logdata);
-                            overall_duration=0;                            
-                        }
+                            
                     }
 
             socket.close();

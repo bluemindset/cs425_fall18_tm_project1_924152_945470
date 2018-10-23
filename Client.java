@@ -27,13 +27,7 @@ public class Client {
         while (current_users < N_users ) {
 
             Socket clientS = new Socket(hostname, port);
-                 try{
-                     Thread.sleep(1000);
-                    }
-                       catch(InterruptedException ex)
-                    {
-                      Thread.currentThread().interrupt();
-                    }
+             
                     new ClientThread(clientS,++current_users,ipaddress,port).start(); //new user
             }
     }
